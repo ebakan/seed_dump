@@ -1,6 +1,6 @@
 # Mock Rails.application.eager_load! and define some
 # Rails models for use in specs.
-class Rails
+module Rails
   def self.application
     self
   end
@@ -21,6 +21,10 @@ class Rails
 
       @already_called = true
     end
+  end
+
+  def self.env
+    'test'
   end
 end
 
