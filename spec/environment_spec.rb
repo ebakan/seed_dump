@@ -51,6 +51,14 @@ describe SeedDump do
       end
     end
 
+    describe 'HASH' do
+      it 'should pass along any attributes to be excluded' do
+        SeedDump.should_receive(:dump).with(anything, include(hash: [:baggins, :saggins]))
+
+        SeedDump.dump_using_environment('HASH' => 'baggins,saggins')
+      end
+    end
+
     describe 'FILE' do
       it 'should pass the FILE parameter to the dump method correctly' do
         SeedDump.should_receive(:dump).with(anything, include(file: 'blargle'))

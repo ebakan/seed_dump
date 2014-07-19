@@ -1,3 +1,6 @@
+require 'digest'
+require 'digest/bubblebabble'
+
 class SeedDump
   module DumpMethods
     include Enumeration
@@ -19,11 +22,13 @@ class SeedDump
       attribute_strings = []
 
       options[:exclude] ||= [:id, :created_at, :updated_at]
+      options[:hash] ||= []
 
       # We select only string attribute names to avoid conflict
       # with the composite_primary_keys gem (it returns composite
       # primary key attribute names as hashes).
       record.attributes.select {|key| key.is_a?(String) }.each do |attribute, value|
+        value = Digest::MD5.bubblebabble(value) if options[:hash].include? attribute.to_sym and value.is_a? String
         attribute_strings << dump_attribute_new(attribute, value) unless options[:exclude].include?(attribute.to_sym)
       end
 

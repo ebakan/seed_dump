@@ -113,6 +113,18 @@ describe SeedDump do
       end
     end
 
+    context 'with a hash parameter' do
+      it 'should hash string parameters in the dump' do
+        expected_output = "Sample.create!([\n  {string: \"xotah-suzev-bacet-tezid-bykyd-myzev-malel-rifad-cuxox\", text: \"xelar-diguv-sufah-kefuv-kiped-nited-bacap-vukit-cuxox\", integer: 42, float: 3.14, decimal: \"2.72\", datetime: \"1776-07-04 19:14:00\", time: \"2000-01-01 03:15:00\", date: \"1863-11-19\", binary: \"xolel-cebez-cipos-sanub-kekiz-kacyp-vyzic-pafed-bixox\", boolean: false},\n  {string: \"xotah-suzev-bacet-tezid-bykyd-myzev-malel-rifad-cuxox\", text: \"xelar-diguv-sufah-kefuv-kiped-nited-bacap-vukit-cuxox\", integer: 42, float: 3.14, decimal: \"2.72\", datetime: \"1776-07-04 19:14:00\", time: \"2000-01-01 03:15:00\", date: \"1863-11-19\", binary: \"xolel-cebez-cipos-sanub-kekiz-kacyp-vyzic-pafed-bixox\", boolean: false},\n  {string: \"xotah-suzev-bacet-tezid-bykyd-myzev-malel-rifad-cuxox\", text: \"xelar-diguv-sufah-kefuv-kiped-nited-bacap-vukit-cuxox\", integer: 42, float: 3.14, decimal: \"2.72\", datetime: \"1776-07-04 19:14:00\", time: \"2000-01-01 03:15:00\", date: \"1863-11-19\", binary: \"xolel-cebez-cipos-sanub-kekiz-kacyp-vyzic-pafed-bixox\", boolean: false}\n])\n"
+
+        SeedDump.dump(Sample, hash: [:string, :text, :binary]).should eq(expected_output)
+      end
+
+      it 'should not hash non-string parameters in the dump' do
+        SeedDump.dump(Sample, hash: [:integer, :float, :decimal, :datetime, :time, :date, :boolean]).should eq(@expected_output)
+      end
+    end
+
     context 'Range' do
       it 'should dump a class with ranges' do
         expected_output = "RangeSample.create!([\n  {range_with_end_included: \"[1,3]\", range_with_end_excluded: \"[1,3)\", positive_infinite_range: \"[1,]\", negative_infinite_range: \"[,1]\", infinite_range: \"[,]\"}\n])\n"
